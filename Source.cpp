@@ -69,7 +69,7 @@ public:
 		}
 		usernameCheck.insert(x.username);
 
-
+		
 		cout << "Mat khau : ";
 		getline(in, x.password);
 		while (!checkPassword(x.password)) {
@@ -191,7 +191,7 @@ public :
 		}
 		phoneNumberCheck.insert(x.phoneNumber);
 
-
+		//Email
 		cout << "Email : ";
 		getline(in, x.email);
 		while (!checkEmail(x.email)) {
@@ -200,9 +200,13 @@ public :
 		}
 		emailCheck.insert(x.email);
 
+
+		//Address
 		cout << "Address : ";
 		getline(in, x.address);
 
+		
+		//Company
 		cout << "Company : ";
 		getline(in, x.company);
 
@@ -293,9 +297,8 @@ public:
 
 int main()
 {
-
+	User x; cin >> x;
 }
-
 
 
 
