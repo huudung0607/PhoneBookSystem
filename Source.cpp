@@ -37,7 +37,6 @@ set<string> emailCheck;
 set<string> userIDCheck;
 
 
-
 //Cấu trúc dữ liệu map để quản lí tài khoản User (không phải tài khoản contact);
 map<pair<string, string>, string> userAccountData;
 
@@ -165,7 +164,7 @@ public :
 		this->company = company;
 	}
 	friend istream& operator >> (istream& in, Contact& x) {
-
+		//Contact ID tự động sinh ngẫu nhiên và không trùng lặp
 		cout << "Contact ID: ";
 		getline(in, x.contactID);
 		while (!checkContactID(x.contactID)) {
@@ -174,15 +173,16 @@ public :
 		}
 		userIDCheck.insert(x.contactID);
 
-
+		//Full Name
 		cout << "Ten day du : ";
 		getline(in, x.fullName);
 		while (!checkUsername(x.fullName)) {
 			cout << "Mat khau khong hop le. Vui long nhap lai: ";
 			getline(in, x.fullName);
 		}
+		chuanHoaTen(x.fullName);
 
-
+		//So dien thoai
 		cout << "Phone Number : ";
 		getline(in, x.phoneNumber);
 		while (!checkPhoneNumber(x.phoneNumber) || phoneNumberCheck.count(x.phoneNumber)) {
