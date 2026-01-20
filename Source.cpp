@@ -37,7 +37,6 @@ set<string> emailCheck;
 set<string> userIDCheck;
 
 
-
 //Cấu trúc dữ liệu map để quản lí tài khoản User (không phải tài khoản contact);
 map<string, string> userAccountData;
 
@@ -74,6 +73,7 @@ public:
 		usernameCheck.insert(x.username);
 
 		//Nhập và kiểm tra password
+		
 		cout << "Mat khau : ";
 		getline(in, x.password);
 		while (!checkPassword(x.password)) {
@@ -236,6 +236,7 @@ public :
 		}
 		userIDCheck.insert(x.contactID);
 
+		//Full Name
 		//Nhập và kiểm tra fullName
 		cout << "Ten day du : ";
 		getline(in, x.fullName);
@@ -263,7 +264,6 @@ public :
 		}
 		emailCheck.insert(x.email);
 
-		//Nhập address và company
 		cout << "Address : ";
 		getline(in, x.address);
 		cout << "Company : ";
@@ -558,9 +558,8 @@ public:
 
 int main()
 {
-	
-}
 
+}
 
 
 
