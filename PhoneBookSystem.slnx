@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="PhoneBookSystem.vcxproj" />
+  <Project Path="PhoneBookSystem.vcxproj" Id="f0da67c8-b0e0-4dda-83f0-be35fa65974d" />
 </Solution>
