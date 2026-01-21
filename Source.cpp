@@ -553,7 +553,29 @@ public:
 		cout << "Danh sach nguoi lien he sau khi chinh sua : " << endl;
 		viewContactList();
 	}
-
+	void addRelationship() {
+		cout << "Nhap so dien thoai nguoi lien he ban muon them contact : ";
+		string sdt;
+		getline(cin, sdt);
+		while (!checkPhoneNumber(sdt) || !phoneNumberCheck.count(sdt)) {
+			cout << "So dien thoai khong hop le, vui long nhap lai : ";
+			getline(cin, sdt);
+		}
+		cout << "Nhap moi lien he : ";
+		string rela;
+		getline(cin, rela);
+		while (!checkUsername(rela)) {
+			cout << "Moi lien he khong hop le, vui long nhap lai : ";
+			getline(cin, rela);
+		}
+		for (int i = 0; i < contactList.size(); i++) {
+			if (contactList[i].getPhoneNumber() == sdt) {
+				contactList[i].setRelatives(rela);
+			}
+		}
+		cout << "Danh sach nguoi lien he sau khi chinh sua : ";
+		viewContactList();
+	}
 };
 
 class System {
