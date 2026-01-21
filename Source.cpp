@@ -535,6 +535,25 @@ public:
 			}
 		}
 	}
+	void deleteContact() {
+		cout << "Nhap so dien thoai nguoi lien he ban muon xoa : ";
+		string sdt;
+		getline(cin, sdt);
+		while (!checkPhoneNumber(sdt) || !phoneNumberCheck.count(sdt)) {
+			cout << "So dien thoai khong hop le, vui long nhap lai : ";
+			getline(cin, sdt);
+		}
+		for (int i = 0; i < contactList.size(); i++) {
+			if (contactList[i].getPhoneNumber() == sdt) {
+				contactList.erase(contactList.begin() + i);
+				cout << "Xoa tai khoan thanh cong ! ";
+			}
+		}
+		cout << endl;
+		cout << "Danh sach nguoi lien he sau khi chinh sua : " << endl;
+		viewContactList();
+	}
+
 };
 
 class System {
