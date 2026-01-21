@@ -604,6 +604,8 @@ public:
 			cout << "===============================" << endl;
 		}
 	}
+
+	//tao nhom
 	void makeGroup() {
 		srand(time(NULL));
 		Group group;
@@ -612,6 +614,7 @@ public:
 			id = rand() % 900 + 100;
 		}
 		group.id = "G" + to_string(id);
+		groupIDCheck.insert(group.id);
 		string name;
 		getline(cin, name);
 		while (groupNameCheck.count(name)) {
@@ -619,11 +622,14 @@ public:
 			getline(cin, name);
 		}
 		group.name = name;
+		groupList.push_back(group);
 		cout << "Group da tao !" << endl;
 		cout << "Group ID : " << group.id << endl;
 		cout << "Group Name : " << group.name << endl;
 		cout << "Group Member : " << group.member.size() << endl;
 	}
+
+	//xoa nhom
 	void deleteGroup() {
 		cout << "Nhap ten nhom ban muon xoa : ";
 		string name;
@@ -633,14 +639,17 @@ public:
 			getline(cin, name);
 		}
 		for (int i = 0; i < groupList.size(); i++) {
-			if (groupList[i].name == name){
+			if (groupList[i].name == name) {
 				groupList.erase(groupList.begin() + i);
 				cout << "Xoa nhom thanh cong ! " << endl;
 			}
 		}
 		showGroupList();
 	}
+
+	//them thanh vien vao nhom
 	void addMemberToGroup() {
+		// Kiểm tra tên nhóm và số điện thoại có tồn tại hay không
 		cout << "Nhap ten nhom : ";
 		string name; getline(cin, name);
 		while (!groupNameCheck.count(name)) {
@@ -653,6 +662,9 @@ public:
 			cout << "So dien thoai khong ton tai, vui long nhap lai : ";
 			getline(cin, sdt);
 		}
+
+
+		////////thêm 
 		for (int i = 0; i < groupList.size(); i++) {
 			if (groupList[i].name == name) {
 				for (int j = 0; j < contactList.size(); j++) {
@@ -662,10 +674,15 @@ public:
 					}
 				}
 			}
+			break;
 		}
-		cout << "Nhom sau khi add : " << endl;
+
+
+		///// in ra
+		cout << "Thanh vien nhom sau khi add : " << endl;
 		for (int i = 0; i < groupList.size(); i++) {
 			if (groupList[i].name == name) {
+				cout << groupList[i] << endl;
 				for (int j = 0; j < groupList[i].member.size(); j++) {
 					cout << "=================================" << endl;
 					groupList[i].member[j].displayContact();
@@ -674,6 +691,8 @@ public:
 			}
 		}
 	}
+
+	//xoa thanh vien khoi nhom
 	void deleteMemberFromGroup() {
 		cout << "Nhap ten nhom : ";
 		string name; getline(cin, name);
@@ -681,22 +700,28 @@ public:
 			cout << "Khong ton tai ten nhom, vui long nhap lai : ";
 			getline(cin, name);
 		}
-		cout << "Nhap so dien thoai Contact ban muon them vao nhom : ";
+		cout << "Nhap so dien thoai Contact ban muon xoa khoi nhom : ";
 		string sdt; getline(cin, sdt);
 		while (!phoneNumberCheck.count(sdt)) {
 			cout << "So dien thoai khong ton tai, vui long nhap lai : ";
 			getline(cin, sdt);
 		}
+		bool found = false;
 		for (int i = 0; i < groupList.size(); i++) {
 			if (groupList[i].name == name) {
-				for (int j = 0; j < contactList.size(); j++) {
-					if (contactList[j].getPhoneNumber() == sdt) {
-						groupList[i].member.erase(contactList.begin() + j);
+				for (int j = 0; j < groupList[i].member.size(); j++) {
+					if (groupList[i].member[j].getPhoneNumber() == sdt) {
+						groupList[i].member.erase(groupList[i].member.begin() + j);
+						found = true;
+						cout << endl;
 						break;
 					}
 				}
 			}
+			break;
 		}
+		if (!found) cout << "Nhom khong ton tai member co so dien thoai nay ! " << endl;
+		cout << endl;
 		cout << "Nhom sau khi xoa : " << endl;
 		for (int i = 0; i < groupList.size(); i++) {
 			if (groupList[i].name == name) {
@@ -708,12 +733,55 @@ public:
 			}
 		}
 	}
+
+	//tim nhom
+	void searchGroup() {
+		cout << "Nhap ten nhom : ";
+		string name; getline(cin, name);
+		while (!groupNameCheck.count(name)) {
+			cout << "Khong ton tai ten nhom, vui long nhap lai : ";
+			getline(cin, name);
+		}
+		cout << endl;
+		for (int i = 0; i < groupList.size(); i++) {
+			if (groupList[i].name == name) {
+				cout << groupList[i] << endl;
+			}
+		}
+	}
+
+	// tim thanh vien trong nhom
+	void searchMemberInGroup() {
+		cout << "Nhap ten nhom : ";
+		string name; getline(cin, name);
+		while (!groupNameCheck.count(name)) {
+			cout << "Khong ton tai ten nhom, vui long nhap lai : ";
+			getline(cin, name);
+		}
+		cout << endl;
+		cout << "Nhap so dien thoai : ";
+		string sdt; getline(cin, sdt);
+		while (!checkPhoneNumber(sdt) || !phoneNumberCheck.count(sdt)) {
+			cout << "So dien thoai khong ton tai : ";
+			getline(cin, sdt);
+		}
+		bool found = false;
+		for (int i = 0; i < groupList.size(); i++) {
+			for (int j = 0; j < groupList[i].member.size(); j++) {
+				if (groupList[i].member[j].getPhoneNumber() == sdt) {
+					groupList[i].member[j].displayContact();
+				}
+			}
+		}
+		if (!found) cout << "Khong tim ra member trong nhom" << endl;
+	}
 };
 
 class System {
 private:
 	vector<User> userList;
 public:
+	System() {};
 	void registerAccount() {
 		User x;
 		cin >> x;
@@ -731,7 +799,8 @@ public:
 
 int main()
 {
-
+	System system;
+	system.showMenu();
 }
 
 
