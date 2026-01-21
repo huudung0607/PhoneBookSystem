@@ -655,9 +655,9 @@ public:
 		}
 		for (int i = 0; i < groupList.size(); i++) {
 			if (groupList[i].name == name) {
-				for (int i = 0; i < contactList.size(); i++) {
-					if (contactList[i].getPhoneNumber() == sdt) {
-						groupList[i].member.push_back(contactList[i]);
+				for (int j = 0; j < contactList.size(); j++) {
+					if (contactList[j].getPhoneNumber() == sdt) {
+						groupList[i].member.push_back(contactList[j]);
 						break;
 					}
 				}
@@ -666,9 +666,43 @@ public:
 		cout << "Nhom sau khi add : " << endl;
 		for (int i = 0; i < groupList.size(); i++) {
 			if (groupList[i].name == name) {
-				for (int i = 0; i < groupList[i].member.size(); i++) {
+				for (int j = 0; j < groupList[i].member.size(); j++) {
 					cout << "=================================" << endl;
-					groupList[i].member[i].displayContact();
+					groupList[i].member[j].displayContact();
+					cout << "=================================" << endl;
+				}
+			}
+		}
+	}
+	void deleteMemberFromGroup() {
+		cout << "Nhap ten nhom : ";
+		string name; getline(cin, name);
+		while (!groupNameCheck.count(name)) {
+			cout << "Khong ton tai ten nhom, vui long nhap lai : ";
+			getline(cin, name);
+		}
+		cout << "Nhap so dien thoai Contact ban muon them vao nhom : ";
+		string sdt; getline(cin, sdt);
+		while (!phoneNumberCheck.count(sdt)) {
+			cout << "So dien thoai khong ton tai, vui long nhap lai : ";
+			getline(cin, sdt);
+		}
+		for (int i = 0; i < groupList.size(); i++) {
+			if (groupList[i].name == name) {
+				for (int j = 0; j < contactList.size(); j++) {
+					if (contactList[j].getPhoneNumber() == sdt) {
+						groupList[i].member.erase(contactList.begin() + j);
+						break;
+					}
+				}
+			}
+		}
+		cout << "Nhom sau khi xoa : " << endl;
+		for (int i = 0; i < groupList.size(); i++) {
+			if (groupList[i].name == name) {
+				for (int j = 0; j < groupList[i].member.size(); j++) {
+					cout << "=================================" << endl;
+					groupList[i].member[j].displayContact();
 					cout << "=================================" << endl;
 				}
 			}
