@@ -140,11 +140,11 @@ public:
 	void setPassword(string password) {
 		this->password = password;
 	}
-	void login(string username, string password) {
+	bool login(string username, string password) {
 		if (userAccountData.find(username) != userAccountData.end() && userAccountData[username] == password) {
-			cout << "Dang nhap thanh cong !" << endl;
+			return true;
 		}
-		else cout << "Dang nhap that bai !" << endl;
+		else return false;
 	}
 	void logout() {
 		cout << "Dang xuat thanh cong!" << endl;
@@ -345,6 +345,7 @@ struct Group {
 		out << "Group ID : " << x.id << endl;
 		out << "Group Name : " << x.name << endl;
 		out << "Group Member : " << x.member.size();
+		return out;
 	}
 };
 vector<Group> groupList;
@@ -358,6 +359,7 @@ private:
 	string bookID;
 	vector<Contact> contactList;
 public:
+	phoneBook() {};
 	phoneBook(string bookID) {
 		this->bookID = bookID;
 	}
@@ -595,7 +597,86 @@ public:
 		cout << "Danh sach nguoi lien he sau khi chinh sua : ";
 		viewContactList();
 	}
-
+	void searchContact() {
+		cout << "1. Tim theo ten : ";
+		cout << "2. Tim theo sdt : ";
+		string choice;
+		getline(cin, choice);
+		while (choice != "1" && choice != "2") {
+			cout << "Khong hop le, vui long nhap lai ";
+			getline(cin, choice);
+		}
+		if (choice == "1") {
+			cout << "Nhap ten contact : ";
+			string ten;
+			getline(cin, ten);
+			while (!checkUsername(ten)) {
+				cout << "Ten khong hop le, vui long nhap lai :";
+				getline(cin, ten);
+			}
+			chuanHoaTen(ten);
+			cout << "Danh sach nguoi co ten " << ten << endl;
+			for (int i = 0; i < contactList.size(); i++) {
+				if (checkName(contactList[i].getFullName(), ten)) {
+					contactList[i].displayContact();
+				}
+			}
+		}
+		else {
+			cout << "Nhap so dien thoai : ";
+			string sdt;
+			getline(cin, sdt);
+			while (!checkPhoneNumber(sdt) || !phoneNumberCheck.count(sdt)) {
+				cout << "So dien thoai khong hop le, vui long nhap lai : ";
+				getline(cin, sdt);
+			}
+			for (int i = 0; i < contactList.size(); i++) {
+				if (contactList[i].getPhoneNumber() == sdt){
+					contactList[i].displayContact();
+				}
+			}
+		}
+	}
+	void viewContact() {
+		cout << "1. Tim theo ten : ";
+		cout << "2. Tim theo sdt : ";
+		string choice;
+		getline(cin, choice);
+		while (choice != "1" && choice != "2") {
+			cout << "Khong hop le, vui long nhap lai ";
+			getline(cin, choice);
+		}
+		if (choice == "1") {
+			cout << "Nhap ten contact : ";
+			string ten;
+			getline(cin, ten);
+			while (!checkUsername(ten)) {
+				cout << "Ten khong hop le, vui long nhap lai :";
+				getline(cin, ten);
+			}
+			chuanHoaTen(ten);
+			cout << "Danh sach nguoi co ten " << ten << endl;
+			for (int i = 0; i < contactList.size(); i++) {
+				if (checkName(contactList[i].getFullName(), ten)) {
+					contactList[i].displayContact();
+				}
+			}
+		}
+		else {
+			cout << "Nhap so dien thoai : ";
+			string sdt;
+			getline(cin, sdt);
+			while (!checkPhoneNumber(sdt) || !phoneNumberCheck.count(sdt)) {
+				cout << "So dien thoai khong hop le, vui long nhap lai : ";
+				getline(cin, sdt);
+			}
+			for (int i = 0; i < contactList.size(); i++) {
+				if (contactList[i].getPhoneNumber() == sdt) {
+					contactList[i].displayContact();
+				}
+			}
+		}
+	}
 	////Group Features
 	void showGroupList() {
 		for (int i = 0; i < groupList.size(); i++) {
@@ -777,6 +858,7 @@ public:
 	}
 };
 
+
 class System {
 private:
 	vector<User> userList;
@@ -795,15 +877,217 @@ public:
 		cout << "3.Admin" << endl;
 		cout << "==========================================" << endl;
 	}
+	vector<User> getUserList() {
+		return userList;
+	}
 };
 
 int main()
 {
 	System system;
-	system.showMenu();
+	bool straight = false;
+	int cnt = 0;
+	while (true) {
+		if (cnt == 6) cnt = 0;
+		cout << "=======PHONEBOOK MANAGEMENT SYSTEM========" << endl;
+		cout << "Moi chon vai tro he thong : " << endl;
+		cout << "1.Khach" << endl;
+		cout << "2.Nguoi Dung" << endl;
+		cout << "3.Admin" << endl;
+		cout << "0. Exit " << endl;
+		cout << "==========================================" << endl;
+		cout << "Choice : ";
+		string choice;
+		getline(cin, choice);
+		while (choice != "1" && choice != "2" && choice != "3" && choice != "0") {
+			cout << "Lua chon khong hop le, vui long nhap lai : ";
+			getline(cin, choice);
+		}
+		if (choice == "1") {
+			while (true) {
+				cout << "Ban la khach " << endl;
+				cout << "1. Dang ky " << endl;
+				cout << "2. Dang nhap " << endl;
+				cout << "0. Thoat " << endl;
+				string ch;
+				cout << "Choice : ";
+				getline(cin, ch);
+				while (ch != "1" && ch != "2" && ch != "0") {
+					cout << "Vui long nhap lai :";
+					getline(cin, ch);
+				}
+				if (ch == "0") {
+					break;
+				}
+				if (ch == "1") {
+					cout << "Ban la khach!" << endl;
+					cout << "Tien hanh dang ky ! " << endl;
+					system.registerAccount();
+					cout << endl;	
+					cout << endl;
+				}
+				if (ch == "2") {
+					cout << "Dang nhap" << endl;
+					bool flag = false;
+					string username, password;
+					cout << "Username : ";
+					getline(cin, username);
+					cout << "Password : ";
+					getline(cin, password);
+					for (int i = 0; i < system.getUserList().size(); i++) {
+						if (system.getUserList()[i].login(username, password)) {
+							cout << "Dang nhap thanh cong !" << endl << endl;
+							flag = true;
+							straight = true;
+							break;
+						}
+					}
+					if (flag == false) cout << "Dang nhap that bai !" << endl << endl;
+					else break;
+				}
+			}
+		}
+		while (choice == "2" && cnt <= 5) {
+			if(straight == true){
+				int id = rand() % 9000 + 1000;
+				phoneBook userBook(to_string(id));
+				while (true) {
+					cout << "\n=================================================" << endl;
+					cout << "CHUC NANG QUAN LY DANH BA" << endl;
+					cout << "1. Them lien he" << endl;
+					cout << "2. Chinh sua lien he" << endl;
+					cout << "3. Xoa lien he" << endl;
+					cout << "4. Tim kiem lien he" << endl;
+					cout << "5. Hien thi danh sach lien he (A-Z)" << endl;
+					cout << "6. Xem lien he chi tiet" << endl;
+					cout << "7. Them nhom" << endl;
+					cout << "8. Them quan he" << endl;
+					cout << "9. Quan ly nhom" << endl;
+					cout << "10. Dang xuat" << endl;
+					cout << "=================================================" << endl;
+					cout << "Choice : ";
+					string choice;
+					getline(cin, choice);
+					while (choice != "1" && choice != "2" && choice != "3" && choice != "4" &&
+						choice != "5" && choice != "6" && choice != "7" && choice != "8" && choice != "9" && choice != "10") {
+						cout << "Lua chon khong hop le, vui long nhap lai : ";
+						getline(cin, choice);
+					}
+					if (choice == "1") {
+						userBook.addContact();
+					}
+					else if (choice == "2") {
+						userBook.editContact();
+					}
+					else if (choice == "3") {
+						userBook.deleteContact();
+					}
+					else if (choice == "4") {
+						userBook.searchContact();
+					}
+					else if (choice == "5") {
+						userBook.viewContactList();
+					}
+					else if (choice == "6") {
+						userBook.viewContact();
+					}
+					else if (choice == "7") {
+						userBook.makeGroup();
+					}
+					else if (choice == "8") {
+						userBook.addRelationship();
+					}
+					else if (choice == "9") {
+						while (true) {
+							cout << "\n=== QUAN LY NHOM ===\n";
+							cout << "1. Hien thi danh sach nhom\n";
+							cout << "2. Them thanh vien vao nhom\n";
+							cout << "3. Xoa thanh vien khoi nhom\n";
+							cout << "4. Tim nhom\n";
+							cout << "5. Tim thanh vien trong nhom\n";
+							cout << "6. Xoa nhom\n";
+							cout << "0. Quay lai\n";
+							cout << "Choice: ";
+							string groupChoice;
+							getline(cin, groupChoice);
+							while (groupChoice != "1" && groupChoice != "2" && groupChoice != "3" && groupChoice != "4" &&
+								groupChoice != "5" && groupChoice != "6" && groupChoice != "0") {
+								getline(cin, groupChoice);
+							}
+							if (groupChoice == "1") {
+								userBook.showGroupList();
+							}
+							else if (groupChoice == "2") {
+								userBook.addMemberToGroup();
+							}
+							else if (groupChoice == "3") {
+								userBook.deleteMemberFromGroup();
+							}
+							else if (groupChoice == "4") {
+								userBook.searchGroup();
+							}
+							else if (groupChoice == "5") {
+								userBook.searchMemberInGroup();
+							}
+							else if (groupChoice == "6") {
+								userBook.deleteGroup();
+							}
+							else if (groupChoice == "0") {
+								break;
+							}
+						}
+					}
+				}
+			}
+			else {
+				cout << "Ban la nguoi dung !" << endl;
+				cout << "Username : ";
+				string username;
+				getline(cin, username);
+				string password;
+				cout << "Password : ";
+				getline(cin, password);
+				bool flag = false;
+				for (int i = 0; i < system.getUserList().size(); i++) {
+					if (system.getUserList()[i].login(username, password)) {
+						cout << "Dang nhap thanh cong !" << endl << endl;
+						cout << endl;
+						flag = true;
+						straight = true;
+						break;
+					}
+				}
+				if (flag == false) {
+					cout << "Dang nhap that bai !" << endl << endl;
+					straight = false;
+					cnt++;
+				}
+			}
+		}
+		while (choice == "3") {
+			string username, password;
+			cout << "Username : ";
+			getline(cin, username);
+			cout << "Password : ";
+			getline(cin,password);
+			bool flag = false;
+			if (username.find("admin") != string::npos && password.find("admin") != string::npos
+				|| username.find("Admin") != string::npos && password.find("Admin") != string::npos ||
+				username.find("admin") != string::npos && password.find("Admin") != string::npos ||
+				username.find("admin") != string::npos && password.find("Admin") != string::npos) {
+				cout << "Dang nhap thanh cong ! " << endl << endl;
+				flag = true;
+				break;
+			}
+			if (flag == false) {
+				cout << "Dang nhap that bai ! " << endl << endl;
+			}
+			else {
+				
+			}
+		}
+	}
 }
-
-
 
 
 
