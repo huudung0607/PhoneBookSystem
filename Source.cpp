@@ -1,4 +1,4 @@
-﻿
+﻿#include <fstream>
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -163,15 +163,15 @@ public:
 			cout << "Khong co tai khoan bi khoa!" << endl;
 			return;
 		}
-		cout << "Nhap ma ID tai khoan can mo khoa : ";
-		string id;
-		getline(cin, id);
-		while (!userIDCheck.count(id)) {
-			cout << "Khong tim thay ID, vui long nhap lai : ";
-			getline(cin, id);
+		cout << "Nhap username tai khoan can mo khoa : ";
+		string name;
+		getline(cin, name);
+		while (!usernameCheck.count(name)) {
+			cout << "Khong tim thay ten, vui long nhap lai : ";
+			getline(cin, name);
 		}
 		for (int i = 0; i < lockAccount.size(); i++) {
-			if (lockAccount[i].getUserID() == id) {
+			if (lockAccount[i].getUsername() == name) {
 				unlockAccount.push_back(lockAccount[i]);
 				lockAccount.erase(lockAccount.begin() + i);
 				cout << "Mo khoa tai khoan thanh cong!" << endl;
@@ -184,15 +184,15 @@ public:
 			cout << "Khong co tai khoan de khoa!" << endl;
 			return;
 		}
-		cout << "Nhap ma ID tai khoan can khoa : ";
-		string id;
-		getline(cin, id);
-		while (!userIDCheck.count(id)) {
-			cout << "Khong tim thay ID, vui long nhap lai : ";
-			getline(cin, id);
+		cout << "Nhap ma name tai khoan can khoa : ";
+		string name;
+		getline(cin, name);
+		while (!usernameCheck.count(name)) {
+			cout << "Khong tim thay name, vui long nhap lai : ";
+			getline(cin, name);
 		}
 		for (int i = 0; i < unlockAccount.size(); i++) {
-			if (unlockAccount[i].getUserID() == id) {
+			if (unlockAccount[i].getUsername() == name) {
 				lockAccount.push_back(unlockAccount[i]);
 				unlockAccount.erase(unlockAccount.begin() + i);
 				cout << "Khoa tai khoan thanh cong!" << endl;
@@ -315,6 +315,9 @@ public :
 		}
 		return ten[ten.size() - 1];
 	}
+	void setContactID(string contactID) {
+		this->contactID = contactID;
+	}
 	void setFullName(string fullName) {
 		this->fullName = fullName;
 	}
@@ -354,7 +357,7 @@ set<string> groupNameCheck;
 /////////////////////////////////
 
 
-class phoneBook{
+class phoneBook {
 private:
 	string bookID;
 	vector<Contact> contactList;
@@ -399,7 +402,7 @@ public:
 				}
 			}
 		}
-		else if(ch == "2") {
+		else if (ch == "2") {
 			cout << "Nhap email nguoi lien he : ";
 			string emailNLH;
 			getline(cin, emailNLH);
@@ -631,7 +634,7 @@ public:
 				getline(cin, sdt);
 			}
 			for (int i = 0; i < contactList.size(); i++) {
-				if (contactList[i].getPhoneNumber() == sdt){
+				if (contactList[i].getPhoneNumber() == sdt) {
 					contactList[i].displayContact();
 				}
 			}
@@ -856,6 +859,52 @@ public:
 		}
 		if (!found) cout << "Khong tim ra member trong nhom" << endl;
 	}
+
+	vector<Contact> getContactList() {
+		return contactList;
+	}
+
+	void docContactList() {
+		fstream input("ContactList.txt", ios::in);
+		if (!input.is_open()) {
+			cout << "Khong the mo file: " << endl;
+			return;
+		}
+		vector<string> docFile;
+		string line;
+		while (getline(input, line)) {
+			if (!line.empty()) {
+				docFile.push_back(line);
+			}
+		}
+		for (int i = 0; i < docFile.size() - 6; i += 7) {
+			Contact contact;
+			contact.setContactID(docFile[i].substr(13));
+			if (userIDCheck.count(contact.getContactID()) || !checkContactID(contact.getContactID())) {
+				if (userIDCheck.count(contact.getContactID())) {
+					cout << "ContactID da ton tai, vui long nhap lai " << endl;
+				}
+				cout << "ContactID : " << contact.getContactID() << " khong hop le" << endl;
+			}	
+			else {
+				userIDCheck.insert(contact.getContactID());
+				contact.setFullName(docFile[i + 1].substr(12));
+				contact.setPhoneNumber(docFile[i + 2].substr(15));
+				if (!checkPhoneNumber(contact.getPhoneNumber()) || phoneNumberCheck.count(contact.getPhoneNumber())) {
+					break;
+				}
+				contact.setEmail(docFile[i + 3].substr(8));
+				if (!checkEmail(contact.getEmail()) || emailCheck.count(contact.getEmail())) {
+					break;
+				}
+				contact.setAddress(docFile[i + 4].substr(10));
+				contact.setCompany(docFile[i + 5].substr(10));
+				contact.setRelatives(docFile[i + 6].substr(12));
+				contactList.push_back(contact);
+			}
+		}
+		input.close();
+	}
 };
 
 
@@ -868,6 +917,7 @@ public:
 		User x;
 		cin >> x;
 		userList.push_back(x);
+		unlockAccount.push_back(x);
 	}
 	void showMenu() {
 		cout << "=======PHONEBOOK MANAGEMENT SYSTEM========" << endl;
@@ -880,6 +930,30 @@ public:
 	vector<User> getUserList() {
 		return userList;
 	}
+	void docFile() {
+		fstream input("UserList.txt", ios::in);
+		if (!input.is_open()) {
+			cout << "Khong the mo file: " << endl;
+			return;
+		}
+		string line;
+		vector<string> tmp;
+		while (getline(input, line)) {
+			if (!line.empty()) {
+				tmp.push_back(line);
+			}
+		}
+		for (int i = 0; i < tmp.size() - 2; i += 3) {
+			User x;
+			x.setUsername(tmp[i].substr(11));
+			x.setPassword(tmp[i + 1].substr(11));
+			x.setEmail(tmp[i + 2].substr(8));
+			userList.push_back(x);
+			unlockAccount.push_back(x);
+			userAccountData.insert({ x.getUsername(),x.getPassword() });
+		}
+		input.close();
+	}
 };
 
 int main()
@@ -887,6 +961,7 @@ int main()
 	System system;
 	bool straight = false;
 	int cnt = 0;
+	system.docFile();
 	while (true) {
 		if (cnt == 6) cnt = 0;
 		cout << "=======PHONEBOOK MANAGEMENT SYSTEM========" << endl;
@@ -902,6 +977,10 @@ int main()
 		while (choice != "1" && choice != "2" && choice != "3" && choice != "0") {
 			cout << "Lua chon khong hop le, vui long nhap lai : ";
 			getline(cin, choice);
+		}
+		if (choice == "0") {
+			cout << "Cam on ban da su dung" << endl;
+			return 0;
 		}
 		if (choice == "1") {
 			while (true) {
@@ -934,15 +1013,21 @@ int main()
 					getline(cin, username);
 					cout << "Password : ";
 					getline(cin, password);
+					bool login = false;
+					for (int i = 0; i < unlockAccount.size(); i++) {
+						if (unlockAccount[i].getUsername() == username) {
+							login = true;
+						}
+					}
 					for (int i = 0; i < system.getUserList().size(); i++) {
-						if (system.getUserList()[i].login(username, password)) {
+						if (system.getUserList()[i].login(username, password) && login == true) {
 							cout << "Dang nhap thanh cong !" << endl << endl;
 							flag = true;
 							straight = true;
 							break;
 						}
 					}
-					if (flag == false) cout << "Dang nhap that bai !" << endl << endl;
+					if (flag == false || login == false) cout << "Dang nhap that bai !" << endl << endl;
 					else break;
 				}
 			}
@@ -951,6 +1036,9 @@ int main()
 			if(straight == true){
 				int id = rand() % 9000 + 1000;
 				phoneBook userBook(to_string(id));
+				//doc contactList co san
+				userBook.docContactList();
+				//
 				while (true) {
 					cout << "\n=================================================" << endl;
 					cout << "CHUC NANG QUAN LY DANH BA" << endl;
@@ -963,7 +1051,7 @@ int main()
 					cout << "7. Them nhom" << endl;
 					cout << "8. Them quan he" << endl;
 					cout << "9. Quan ly nhom" << endl;
-					cout << "10. Dang xuat" << endl;
+					cout << "10. Thoat" << endl;
 					cout << "=================================================" << endl;
 					cout << "Choice : ";
 					string choice;
@@ -1037,6 +1125,7 @@ int main()
 							}
 						}
 					}
+					else if (choice == "10") break;
 				}
 			}
 			else {
@@ -1048,8 +1137,14 @@ int main()
 				cout << "Password : ";
 				getline(cin, password);
 				bool flag = false;
+				bool login = false;
+				for (int i = 0; i < unlockAccount.size(); i++) {
+					if (unlockAccount[i].getUsername() == username){
+						login = true;
+					}
+				}
 				for (int i = 0; i < system.getUserList().size(); i++) {
-					if (system.getUserList()[i].login(username, password)) {
+					if (system.getUserList()[i].login(username, password) && login == true) {
 						cout << "Dang nhap thanh cong !" << endl << endl;
 						cout << endl;
 						flag = true;
@@ -1057,7 +1152,7 @@ int main()
 						break;
 					}
 				}
-				if (flag == false) {
+				if (flag == false || login == false) {
 					cout << "Dang nhap that bai !" << endl << endl;
 					straight = false;
 					cnt++;
@@ -1077,13 +1172,32 @@ int main()
 				username.find("admin") != string::npos && password.find("Admin") != string::npos) {
 				cout << "Dang nhap thanh cong ! " << endl << endl;
 				flag = true;
-				break;
 			}
 			if (flag == false) {
 				cout << "Dang nhap that bai ! " << endl << endl;
+				break;
 			}
-			else {
-				
+			while (true) {
+				Admin admin;
+				cout << "1. Mo khoa tai khoan " << endl;
+				cout << "2. Khoa tai khoan " << endl;
+				cout << "0. Thoat" << endl;
+				string ch;
+				getline(cin, ch);
+				while (ch != "1" && ch != "2" && ch != "0") {
+					cout << "Lua chon khong hop le, vui long nhap lai";
+					getline(cin, ch);
+				}
+				if (ch == "1") {
+					admin.UnlockAccount();
+					cout << "Mo khoa tai khoan thanh cong" << endl;
+				}
+				else if (ch == "2") {
+					cout << "Khoa tai khoan thanh cong" << endl;
+				}
+				else if (ch == "0") {
+					break;
+				}
 			}
 		}
 	}

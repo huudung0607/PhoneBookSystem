@@ -12,7 +12,7 @@ Phone Number : 0366767123
 Email : lionelmessi123@gmail.com
 Address : Chi Le
 Company : FiFa
-Relatives : Ban be
+Relatives : Bo
 
 Contact ID : 067076712543
 Full Name : Cristiano Ronaldo
@@ -20,4 +20,13 @@ Phone Number : 0366767776
 Email : ronaldo123@gmail.com
 Address : Han Quoc
 Company : FiFa
-Relatives : Ban Be
+Relatives : Me
+
+Contact ID : 034366024617
+Full Name : Huynh Huu Dung Sieu Cap Dep Trai
+Phone Number : 0869282768
+Email : huudung6767@gmail.com
+Address : Khanh Hoa
+Company : Viettel
+Relatives : Ban be
+
