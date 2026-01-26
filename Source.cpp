@@ -397,7 +397,6 @@ public:
 		viewContactList();
 	}
 	void viewContactList() {
-		sortContactByName();
 		for (int i = 0; i < contactList.size(); i++) {
 			cout << "========================================" << endl;
 			contactList[i].displayContact();
@@ -702,11 +701,13 @@ public:
 		group.id = "G" + to_string(id);
 		groupIDCheck.insert(group.id);
 		string name;
+		cout << "Nhap ten nhom : ";
 		getline(cin, name);
 		while (groupNameCheck.count(name)) {
 			cout << "Trung ten group, vui long nhap lai : ";
 			getline(cin, name);
 		}
+		groupNameCheck.insert(name);
 		group.name = name;
 		groupList.push_back(group);
 		cout << "Group da tao !" << endl;
@@ -748,8 +749,6 @@ public:
 			cout << "So dien thoai khong ton tai, vui long nhap lai : ";
 			getline(cin, sdt);
 		}
-
-
 		////////thêm 
 		for (int i = 0; i < groupList.size(); i++) {
 			if (groupList[i].name == name) {
@@ -759,10 +758,9 @@ public:
 						break;
 					}
 				}
+				break;
 			}
-			break;
 		}
-
 
 		///// in ra
 		cout << "Thanh vien nhom sau khi add : " << endl;
@@ -803,8 +801,8 @@ public:
 						break;
 					}
 				}
+				break;
 			}
-			break;
 		}
 		if (!found) cout << "Nhom khong ton tai member co so dien thoai nay ! " << endl;
 		cout << endl;
@@ -886,22 +884,24 @@ public:
 				if (userIDCheck.count(contact.getContactID())) {
 					cout << "ContactID da ton tai, vui long nhap lai " << endl;
 				}
-				cout << "ContactID : " << contact.getContactID() << " khong hop le" << endl;
+				else cout << "ContactID : " << contact.getContactID() << " khong hop le" << endl;
 			}	
 			else {
 				userIDCheck.insert(contact.getContactID());
 				contact.setFullName(docFile[i + 1].substr(12));
 				contact.setPhoneNumber(docFile[i + 2].substr(15));
 				if (!checkPhoneNumber(contact.getPhoneNumber()) || phoneNumberCheck.count(contact.getPhoneNumber())) {
-					break;
+					continue;
 				}
 				contact.setEmail(docFile[i + 3].substr(8));
 				if (!checkEmail(contact.getEmail()) || emailCheck.count(contact.getEmail())) {
-					break;
+					continue;
 				}
 				contact.setAddress(docFile[i + 4].substr(10));
 				contact.setCompany(docFile[i + 5].substr(10));
 				contact.setRelatives(docFile[i + 6].substr(12));
+				phoneNumberCheck.insert(contact.getPhoneNumber());
+				emailCheck.insert(contact.getEmail());
 				contactList.push_back(contact);
 			}
 		}
@@ -950,6 +950,8 @@ public:
 			x.setUsername(tmp[i].substr(11));
 			x.setPassword(tmp[i + 1].substr(11));
 			x.setEmail(tmp[i + 2].substr(8));
+			usernameCheck.insert(x.getUsername());
+			emailCheck.insert(x.getEmail());
 			userList.push_back(x);
 			unlockAccount.push_back(x);
 			userAccountData.insert({ x.getUsername(),x.getPassword() });
@@ -1030,7 +1032,7 @@ int main()
 							straight = true;
 							break;
 						}
-					}
+					}	
 					if (flag == false || login == false) cout << "Dang nhap that bai !" << endl << endl;
 					else break;
 				}
@@ -1078,7 +1080,7 @@ int main()
 						userBook.searchContact();
 					}
 					else if (choice == "5") {
-						userBook.viewContactList();
+						userBook.sortContactByName();
 					}
 					else if (choice == "6") {
 						userBook.viewContact();
