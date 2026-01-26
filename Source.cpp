@@ -184,7 +184,7 @@ public:
 			cout << "Khong co tai khoan de khoa!" << endl;
 			return;
 		}
-		cout << "Nhap ma name tai khoan can khoa : ";
+		cout << "Nhap username tai khoan can khoa : ";
 		string name;
 		getline(cin, name);
 		while (!usernameCheck.count(name)) {
@@ -793,6 +793,7 @@ public:
 		bool found = false;
 		for (int i = 0; i < groupList.size(); i++) {
 			if (groupList[i].name == name) {
+				cout << groupList[i] << endl;
 				for (int j = 0; j < groupList[i].member.size(); j++) {
 					if (groupList[i].member[j].getPhoneNumber() == sdt) {
 						groupList[i].member.erase(groupList[i].member.begin() + j);
@@ -854,6 +855,7 @@ public:
 			for (int j = 0; j < groupList[i].member.size(); j++) {
 				if (groupList[i].member[j].getPhoneNumber() == sdt) {
 					groupList[i].member[j].displayContact();
+					found = true;
 				}
 			}
 		}
@@ -1057,41 +1059,41 @@ int main()
 					cout << "7. Them nhom" << endl;
 					cout << "8. Them quan he" << endl;
 					cout << "9. Quan ly nhom" << endl;
-					cout << "10. Thoat" << endl;
+					cout << "0. Thoat" << endl;
 					cout << "=================================================" << endl;
 					cout << "Choice : ";
-					string choice;
-					getline(cin, choice);
-					while (choice != "1" && choice != "2" && choice != "3" && choice != "4" &&
-						choice != "5" && choice != "6" && choice != "7" && choice != "8" && choice != "9" && choice != "10") {
+					string menuChoice;
+					getline(cin, menuChoice);
+					while (menuChoice != "1" && menuChoice != "2" && menuChoice != "3" && menuChoice != "4" &&
+						menuChoice != "5" && menuChoice != "6" && menuChoice != "7" && menuChoice != "8" && menuChoice != "9" && menuChoice != "0") {
 						cout << "Lua chon khong hop le, vui long nhap lai : ";
-						getline(cin, choice);
+						getline(cin, menuChoice);
 					}
-					if (choice == "1") {
+					if (menuChoice == "1") {
 						userBook.addContact();
 					}
-					else if (choice == "2") {
+					else if (menuChoice == "2") {
 						userBook.editContact();
 					}
-					else if (choice == "3") {
+					else if (menuChoice == "3") {
 						userBook.deleteContact();
 					}
-					else if (choice == "4") {
+					else if (menuChoice == "4") {
 						userBook.searchContact();
 					}
-					else if (choice == "5") {
+					else if (menuChoice == "5") {
 						userBook.sortContactByName();
 					}
-					else if (choice == "6") {
+					else if (menuChoice == "6") {
 						userBook.viewContact();
 					}
-					else if (choice == "7") {
+					else if (menuChoice == "7") {
 						userBook.makeGroup();
 					}
-					else if (choice == "8") {
+					else if (menuChoice == "8") {
 						userBook.addRelationship();
 					}
-					else if (choice == "9") {
+					else if (menuChoice == "9") {
 						while (true) {
 							cout << "\n=== QUAN LY NHOM ===\n";
 							cout << "1. Hien thi danh sach nhom\n";
@@ -1101,37 +1103,40 @@ int main()
 							cout << "5. Tim thanh vien trong nhom\n";
 							cout << "6. Xoa nhom\n";
 							cout << "0. Quay lai\n";
-							cout << "Choice: ";
-							string groupChoice;
-							getline(cin, groupChoice);
-							while (groupChoice != "1" && groupChoice != "2" && groupChoice != "3" && groupChoice != "4" &&
-								groupChoice != "5" && groupChoice != "6" && groupChoice != "0") {
-								getline(cin, groupChoice);
+							cout << "menuChoice: ";
+							string groupmenuChoice;
+							getline(cin, groupmenuChoice);
+							while (groupmenuChoice != "1" && groupmenuChoice != "2" && groupmenuChoice != "3" && groupmenuChoice != "4" &&
+								groupmenuChoice != "5" && groupmenuChoice != "6" && groupmenuChoice != "0") {
+								getline(cin, groupmenuChoice);
 							}
-							if (groupChoice == "1") {
+							if (groupmenuChoice == "1") {
 								userBook.showGroupList();
 							}
-							else if (groupChoice == "2") {
+							else if (groupmenuChoice == "2") {
 								userBook.addMemberToGroup();
 							}
-							else if (groupChoice == "3") {
+							else if (groupmenuChoice == "3") {
 								userBook.deleteMemberFromGroup();
 							}
-							else if (groupChoice == "4") {
+							else if (groupmenuChoice == "4") {
 								userBook.searchGroup();
 							}
-							else if (groupChoice == "5") {
+							else if (groupmenuChoice == "5") {
 								userBook.searchMemberInGroup();
 							}
-							else if (groupChoice == "6") {
+							else if (groupmenuChoice == "6") {
 								userBook.deleteGroup();
 							}
-							else if (groupChoice == "0") {
+							else if (groupmenuChoice == "0") {
 								break;
 							}
 						}
 					}
-					else if (choice == "10") break;
+					else if (menuChoice == "0") {
+						choice = "0";
+						break;
+					}
 				}
 			}
 			else {
@@ -1189,6 +1194,7 @@ int main()
 				cout << "2. Khoa tai khoan " << endl;
 				cout << "0. Thoat" << endl;
 				string ch;
+				cout << "Lua chon : ";
 				getline(cin, ch);
 				while (ch != "1" && ch != "2" && ch != "0") {
 					cout << "Lua chon khong hop le, vui long nhap lai";
@@ -1196,12 +1202,12 @@ int main()
 				}
 				if (ch == "1") {
 					admin.UnlockAccount();
-					cout << "Mo khoa tai khoan thanh cong" << endl;
 				}
 				else if (ch == "2") {
-					cout << "Khoa tai khoan thanh cong" << endl;
+					admin.LockAccount();
 				}
 				else if (ch == "0") {
+					choice = "0";
 					break;
 				}
 			}
