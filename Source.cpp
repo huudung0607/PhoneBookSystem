@@ -367,7 +367,37 @@ public:
 		this->bookID = bookID;
 	}
 	/////PhoneBook Features
+	static bool cmp(Contact a, Contact b) {
+		if (a.getContactFirstLetter() == b.getContactFirstLetter()) {
+			return a.getFullName().length() < b.getFullName().length();
+		}
+		return a.getContactFirstLetter() < b.getContactFirstLetter();
+	}
+	static bool checkName(string fullName, string tenNhap) {
+		vector<string> fullname;
+		vector<string> tennhap;
+		stringstream ss1(fullName);
+		stringstream ss2(tenNhap);
+		string tmp1, tmp2;
+		while (ss1 >> tmp1) {
+			fullname.push_back(tmp1);
+		}
+		while (ss2 >> tmp2) {
+			tennhap.push_back(tmp2);
+		}
+		for (string x : tennhap) {
+			if (find(fullname.begin(), fullname.end(), x) == fullname.end()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	void sortContactByName() {
+		sort(contactList.begin(), contactList.end(), cmp);
+		viewContactList();
+	}
 	void viewContactList() {
+		sortContactByName();
 		for (int i = 0; i < contactList.size(); i++) {
 			cout << "========================================" << endl;
 			contactList[i].displayContact();
@@ -420,35 +450,7 @@ public:
 			}
 		}
 	}
-	static bool cmp(Contact a, Contact b) {
-		if (a.getContactFirstLetter() == b.getContactFirstLetter()) {
-			return a.getFullName().length() < b.getFullName().length();
-		}
-		return a.getContactFirstLetter() < b.getContactFirstLetter();
-	}
-	static bool checkName(string fullName, string tenNhap) {
-		vector<string> fullname;
-		vector<string> tennhap;
-		stringstream ss1(fullName);
-		stringstream ss2(tenNhap);
-		string tmp1, tmp2;
-		while (ss1 >> tmp1) {
-			fullname.push_back(tmp1);
-		}
-		while (ss2 >> tmp2) {
-			tennhap.push_back(tmp2);
-		}
-		for (string x : tennhap) {
-			if (find(fullname.begin(), fullname.end(), x) == fullname.end()) {
-				return false;
-			}
-		}
-		return true;
-	}
-	void sortContactByName() {
-		sort(contactList.begin(), contactList.end(), cmp);
-		viewContactList();
-	}
+	
 	void addContact() {
 		Contact x;
 		cin >> x;
@@ -1002,8 +1004,10 @@ int main()
 					cout << "Ban la khach!" << endl;
 					cout << "Tien hanh dang ky ! " << endl;
 					system.registerAccount();
+					straight = true;
 					cout << endl;	
 					cout << endl;
+					break;
 				}
 				if (ch == "2") {
 					cout << "Dang nhap" << endl;
