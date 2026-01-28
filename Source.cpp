@@ -14,6 +14,7 @@
 #include <stack>
 #include <unordered_map>
 #include <cstdlib>
+#include <ctime>
 using namespace std;
 
 // hàm kiểm tra, ràng buộc, chuẩn hóa
@@ -21,7 +22,7 @@ bool checkUsername(string username);
 bool checkPassword(string password);
 bool kiTuDacBiet(char c) {
 	if (int(c) >= 32 && int(c) <= 47 || int(c) >= 58 && int(c) <= 64 || int(c) >= 91 && int(c) <= 96 || int(c) >= 123) {
-			return true;
+		return true;
 	}
 	return false;
 }
@@ -42,7 +43,7 @@ map<string, string> userAccountData;
 
 
 
-class User {	
+class User {
 private:
 	string userID, username, email, password;
 public:
@@ -54,8 +55,8 @@ public:
 	}
 	friend istream& operator >> (istream& in, User& x) {
 
-		//Tạo userID ngẫu nhiên từ 10000 đến 99999 và kiểm tra trùng lặ
-		int soID = rand() % 90000 + 10000; 
+		//Tạo userID ngẫu nhiên từ 10000 đến 99999 và kiểm tra trùng lặp
+		int soID = rand() % 90000 + 10000;
 		string ssoID = to_string(soID);
 		while (userIDCheck.count(ssoID)) {
 			soID = rand() % 90000 + 10000;
@@ -72,7 +73,7 @@ public:
 		usernameCheck.insert(x.username);
 
 		//Nhập và kiểm tra password
-		
+
 		cout << "Mat khau : ";
 		getline(in, x.password);
 		while (!checkPassword(x.password)) {
@@ -154,7 +155,7 @@ public:
 vector<User> lockAccount;
 vector<User> unlockAccount;
 class Admin : public User {
-public: 
+public:
 	Admin() {};
 	Admin(string userID, string username, string email, string password) : User(username, email, password) {};
 	void UnlockAccount() {
@@ -179,7 +180,7 @@ public:
 		}
 	}
 	void LockAccount() {
-		if(unlockAccount.size() == 0) {
+		if (unlockAccount.size() == 0) {
 			cout << "Khong co tai khoan de khoa!" << endl;
 			return;
 		}
@@ -205,9 +206,9 @@ public:
 class Contact {
 private:
 	string contactID, fullName, phoneNumber, email, address, company, relatives;
-public :
+public:
 	Contact() {};
-	Contact(string contactID, string fullName, string phoneNumber, string email, string address, string company,string relatives) {
+	Contact(string contactID, string fullName, string phoneNumber, string email, string address, string company, string relatives) {
 		this->contactID = contactID;
 		this->fullName = fullName;
 		this->phoneNumber = phoneNumber;
@@ -281,6 +282,7 @@ public :
 		cout << "Email : " << email << endl;
 		cout << "Address : " << address << endl;
 		cout << "Company : " << company << endl;
+		cout << "Relative : " << relatives << endl;
 	}
 	string getFullName() {
 		return fullName;
@@ -303,7 +305,7 @@ public :
 		while (ss >> tmp) {
 			ten.push_back(tmp);
 		}
-		if (ten.empty()) return ' ';
+		if (ten.empty() || ten[ten.size() - 1].empty()) return ' ';
 		return ten[ten.size() - 1][0];
 	}
 	string getContactFirstName() {
@@ -314,6 +316,7 @@ public :
 		while (ss >> tmp) {
 			ten.push_back(tmp);
 		}
+		if (ten.empty()) return "";
 		return ten[ten.size() - 1];
 	}
 	void setContactID(string contactID) {
@@ -885,7 +888,6 @@ public:
 	void docContactList() {
 		fstream input("ContactList.txt", ios::in);
 		if (!input.is_open()) {
-			cout << "Khong the mo file: " << endl;
 			return;
 		}
 		vector<string> docFile;
@@ -895,35 +897,34 @@ public:
 				docFile.push_back(line);
 			}
 		}
-		for (int i = 0; i < docFile.size() - 6; i += 7) {
+		input.close();
+		if (docFile.size() < 7) {
+			return;
+		}
+
+		for (size_t i = 0; i + 6 < docFile.size(); i += 7) {
 			Contact contact;
 			contact.setContactID(docFile[i]);
 			if (userIDCheck.count(contact.getContactID()) || !checkContactID(contact.getContactID())) {
-				if (userIDCheck.count(contact.getContactID())) {
-					cout << "ContactID da ton tai, vui long nhap lai " << endl;
-				}
-				else cout << "ContactID : " << contact.getContactID() << " khong hop le" << endl;
-			}	
-			else {
-				userIDCheck.insert(contact.getContactID());
-				contact.setFullName(docFile[i + 1]);
-				contact.setPhoneNumber(docFile[i + 2]);
-				if (!checkPhoneNumber(contact.getPhoneNumber()) || phoneNumberCheck.count(contact.getPhoneNumber())) {
-					continue;
-				}
-				contact.setEmail(docFile[i + 3]);
-				if (!checkEmail(contact.getEmail()) || emailCheck.count(contact.getEmail())) {
-					continue;
-				}
-				contact.setAddress(docFile[i + 4]);
-				contact.setCompany(docFile[i + 5]);
-				contact.setRelatives(docFile[i + 6]);
-				phoneNumberCheck.insert(contact.getPhoneNumber());
-				emailCheck.insert(contact.getEmail());
-				contactList.push_back(contact);
+				continue;
 			}
+			userIDCheck.insert(contact.getContactID());
+			contact.setFullName(docFile[i + 1]);
+			contact.setPhoneNumber(docFile[i + 2]);
+			if (!checkPhoneNumber(contact.getPhoneNumber()) || phoneNumberCheck.count(contact.getPhoneNumber())) {
+				continue;
+			}
+			contact.setEmail(docFile[i + 3]);
+			if (!checkEmail(contact.getEmail()) || emailCheck.count(contact.getEmail())) {
+				continue;
+			}
+			contact.setAddress(docFile[i + 4]);
+			contact.setCompany(docFile[i + 5]);
+			contact.setRelatives(docFile[i + 6]);
+			phoneNumberCheck.insert(contact.getPhoneNumber());
+			emailCheck.insert(contact.getEmail());
+			contactList.push_back(contact);
 		}
-		input.close();
 	}
 };
 
@@ -953,7 +954,6 @@ public:
 	void docFile() {
 		fstream input("UserList.txt", ios::in);
 		if (!input.is_open()) {
-			cout << "Khong the mo file: " << endl;
 			return;
 		}
 		string line;
@@ -963,7 +963,12 @@ public:
 				tmp.push_back(line);
 			}
 		}
-		for (int i = 0; i < tmp.size() - 2; i += 3) {
+		input.close();
+		if (tmp.size() < 3) {
+			return;
+		}
+
+		for (int i = 0; i + 2 < tmp.size(); i += 3) {
 			User x;
 			x.setUsername(tmp[i]);
 			x.setPassword(tmp[i + 1]);
@@ -975,13 +980,13 @@ public:
 			unlockAccount.push_back(x);
 			userAccountData.insert({ x.getUsername(),x.getPassword() });
 		}
-		input.close();
 	}
 };
 
 int main()
 {
 	srand(time(NULL));
+
 	System system;
 	bool straight = false;
 	int cnt = 0;
@@ -1027,7 +1032,7 @@ int main()
 					cout << "Tien hanh dang ky ! " << endl;
 					system.registerAccount();
 					straight = true;
-					cout << endl;	
+					cout << endl;
 					cout << endl;
 					break;
 				}
@@ -1038,7 +1043,7 @@ int main()
 			}
 		}
 		while (choice == "2" && cnt <= 5) {
-			if(straight == true){
+			if (straight == true) {
 				int id = rand() % 9000 + 1000;
 				phoneBook userBook(to_string(id));
 				//doc contactList co san
@@ -1149,7 +1154,7 @@ int main()
 				bool flag = false;
 				bool login = false;
 				for (int i = 0; i < unlockAccount.size(); i++) {
-					if (unlockAccount[i].getUsername() == username){
+					if (unlockAccount[i].getUsername() == username) {
 						login = true;
 					}
 				}
@@ -1174,7 +1179,7 @@ int main()
 			cout << "Username : ";
 			getline(cin, username);
 			cout << "Password : ";
-			getline(cin,password);
+			getline(cin, password);
 			bool flag = false;
 			if (username.find("admin") != string::npos && password.find("admin") != string::npos
 				|| username.find("Admin") != string::npos && password.find("Admin") != string::npos ||
@@ -1217,7 +1222,7 @@ int main()
 
 
 bool checkUsername(string username) {
-	if (isdigit(username[0])) return false;
+	if (username.empty() || isdigit(username[0])) return false;
 	return true;
 }
 bool checkPassword(string password) {
@@ -1247,6 +1252,7 @@ bool checkPhoneNumber(string phoneNumber) {
 	return true;
 }
 void chuanHoaTen(string& ten) {
+	if (ten.empty()) return;
 	stringstream ss(ten);
 	string tmp;
 	string res = "";
@@ -1257,10 +1263,11 @@ void chuanHoaTen(string& ten) {
 		}
 		res += " ";
 	}
-	res.pop_back();
+	if (!res.empty()) res.pop_back();
 	ten = res;
 }
 bool checkContactID(string contactID) {
+	if (contactID.empty()) return false;
 	for (int i = 0; i < contactID.size(); i++) {
 		if (!isdigit(contactID[i])) {
 			return false;
