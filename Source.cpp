@@ -893,6 +893,9 @@ public:
 		vector<string> docFile;
 		string line;
 		while (getline(input, line)) {
+			while (!line.empty() && (line.back() == '\r' || line.back() == '\n' || isspace(line.back()))) {
+				line.pop_back();
+			}
 			if (!line.empty()) {
 				docFile.push_back(line);
 			}
@@ -959,6 +962,9 @@ public:
 		string line;
 		vector<string> tmp;
 		while (getline(input, line)) {
+			if (!line.empty() && (line.back() == '\r' || line.back() == '\n')) {
+				line.pop_back();
+			}
 			if (!line.empty()) {
 				tmp.push_back(line);
 			}
