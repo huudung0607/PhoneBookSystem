@@ -973,7 +973,6 @@ public:
 			x.setUsername(tmp[i]);
 			x.setPassword(tmp[i + 1]);
 			x.setEmail(tmp[i + 2]);
-			cout << tmp[i] << endl << tmp[i + 1] << endl << tmp[i + 2] << endl;
 			usernameCheck.insert(x.getUsername());
 			emailCheck.insert(x.getEmail());
 			userList.push_back(x);
