@@ -449,11 +449,12 @@ public:
 			}
 		}
 	}
-	
 	void addContact() {
 		Contact x;
 		cin >> x;
 		contactList.push_back(x);
+		cout << "Them lien he thanh cong !" << endl;
+		viewContactList();
 	}
 	void editContact() {
 		cout << "Nhap ten contact ban muon chinh sua : ";
@@ -490,6 +491,7 @@ public:
 					cout << "6. Relative" << endl;
 					cout << "0. Thoat chinh chua" << endl;
 					string ch;
+					cout << "Choice : ";
 					getline(cin, ch);
 					while (ch != "1" && ch != "2" && ch != "3" && ch != "4" && ch != "5" && ch != "6" && ch != "0") {
 						cout << "Lua chon khong hop le, vui long nhap lai : ";
@@ -503,7 +505,9 @@ public:
 							cout << "Ten khong hop le, vui long nhap lai : ";
 							getline(cin, ten);
 						}
+						chuanHoaTen(ten);
 						contactList[i].setFullName(ten);
+						cout << "Thay doi thanh cong !" << endl;
 						cout << endl;
 					}
 					else if (ch == "2") {
@@ -514,7 +518,9 @@ public:
 							cout << "So dien thoai khong hop le, vui long nhap lai : ";
 							getline(cin, sdt);
 						}
+						phoneNumberCheck.insert(sdt);
 						contactList[i].setPhoneNumber(sdt);
+						cout << "Thay doi thanh cong !" << endl;
 						cout << endl;
 					}
 					else if (ch == "3") {
@@ -525,7 +531,9 @@ public:
 							cout << "Email khong hop le, vui long nhap lai : ";
 							getline(cin, email);
 						}
+						emailCheck.insert(email);
 						contactList[i].setEmail(email);
+						cout << "Thay doi thanh cong !" << endl;
 						cout << endl;
 					}
 					else if (ch == "4") {
@@ -533,6 +541,7 @@ public:
 						string address;
 						getline(cin, address);
 						contactList[i].setAddress(address);
+						cout << "Thay doi thanh cong !" << endl;
 						cout << endl;
 					}
 					else if (ch == "5") {
@@ -540,6 +549,7 @@ public:
 						string company;
 						getline(cin, company);
 						contactList[i].setCompany(company);
+						cout << "Thay doi thanh cong !" << endl;
 						cout << endl;
 					}
 					else if (ch == "6") {
@@ -547,6 +557,7 @@ public:
 						string relatives;
 						getline(cin, relatives);
 						contactList[i].setRelatives(relatives);
+						cout << "Thay doi thanh cong !" << endl;
 						cout << endl;
 					}
 					else if (ch == "0") {
@@ -554,16 +565,18 @@ public:
 						cout << endl;
 						break;
 					}
+					cout << "Thong tin sau khi chinh sua : " << endl;
+					contactList[i].displayContact();
 				}
-				cout << "Thong tin sau khi chinh sua : " << endl;
-				contactList[i].displayContact();
 			}
 		}
 	}
 	void deleteContact() {
+		cout << "Nhan 0 de thoat" << endl;
 		cout << "Nhap so dien thoai nguoi lien he ban muon xoa : ";
 		string sdt;
 		getline(cin, sdt);
+		if (sdt == "0") return;
 		while (!checkPhoneNumber(sdt) || !phoneNumberCheck.count(sdt)) {
 			cout << "So dien thoai khong hop le, vui long nhap lai : ";
 			getline(cin, sdt);
@@ -579,9 +592,11 @@ public:
 		viewContactList();
 	}
 	void addRelationship() {
+		cout << "Nhan 0 de thoat";
 		cout << "Nhap so dien thoai nguoi lien he ban muon them contact : ";
 		string sdt;
 		getline(cin, sdt);
+		if (sdt == "0") return;
 		while (!checkPhoneNumber(sdt) || !phoneNumberCheck.count(sdt)) {
 			cout << "So dien thoai khong hop le, vui long nhap lai : ";
 			getline(cin, sdt);
@@ -602,9 +617,10 @@ public:
 		viewContactList();
 	}
 	void searchContact() {
-		cout << "1. Tim theo ten : ";
-		cout << "2. Tim theo sdt : ";
+		cout << "1. Tim theo ten : " << endl;
+		cout << "2. Tim theo sdt : " << endl;
 		string choice;
+		cout << "Choice : ";
 		getline(cin, choice);
 		while (choice != "1" && choice != "2") {
 			cout << "Khong hop le, vui long nhap lai ";
@@ -988,7 +1004,7 @@ int main()
 			cout << "Cam on ban da su dung" << endl;
 			return 0;
 		}
-		if (choice == "1") {
+		else if (choice == "1") {
 			while (true) {
 				cout << "Ban la khach " << endl;
 				cout << "1. Dang ky " << endl;
@@ -1013,30 +1029,9 @@ int main()
 					cout << endl;
 					break;
 				}
-				if (ch == "2") {
-					cout << "Dang nhap" << endl;
-					bool flag = false;
-					string username, password;
-					cout << "Username : ";
-					getline(cin, username);
-					cout << "Password : ";
-					getline(cin, password);
-					bool login = false;
-					for (int i = 0; i < unlockAccount.size(); i++) {
-						if (unlockAccount[i].getUsername() == username) {
-							login = true;
-						}
-					}
-					for (int i = 0; i < system.getUserList().size(); i++) {
-						if (system.getUserList()[i].login(username, password) && login == true) {
-							cout << "Dang nhap thanh cong !" << endl << endl;
-							flag = true;
-							straight = true;
-							break;
-						}
-					}	
-					if (flag == false || login == false) cout << "Dang nhap that bai !" << endl << endl;
-					else break;
+				else {
+					cout << "Ban chua co tai khoan khong the dang nhap ! " << endl;
+					cout << endl;
 				}
 			}
 		}
@@ -1135,6 +1130,8 @@ int main()
 					}
 					else if (menuChoice == "0") {
 						choice = "0";
+						cnt = 0;
+						straight = false;
 						break;
 					}
 				}
