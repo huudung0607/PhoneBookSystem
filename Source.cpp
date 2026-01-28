@@ -296,12 +296,14 @@ public :
 	}
 	char getContactFirstLetter() {
 		string username = getFullName();
+		if (username.empty()) return ' ';
 		stringstream ss(username);
 		string tmp;
 		vector<string> ten;
 		while (ss >> tmp) {
 			ten.push_back(tmp);
 		}
+		if (ten.empty()) return ' ';
 		return ten[ten.size() - 1][0];
 	}
 	string getContactFirstName() {
@@ -895,7 +897,7 @@ public:
 		}
 		for (int i = 0; i < docFile.size() - 6; i += 7) {
 			Contact contact;
-			contact.setContactID(docFile[i].substr(13));
+			contact.setContactID(docFile[i]);
 			if (userIDCheck.count(contact.getContactID()) || !checkContactID(contact.getContactID())) {
 				if (userIDCheck.count(contact.getContactID())) {
 					cout << "ContactID da ton tai, vui long nhap lai " << endl;
@@ -904,18 +906,18 @@ public:
 			}	
 			else {
 				userIDCheck.insert(contact.getContactID());
-				contact.setFullName(docFile[i + 1].substr(12));
-				contact.setPhoneNumber(docFile[i + 2].substr(15));
+				contact.setFullName(docFile[i + 1]);
+				contact.setPhoneNumber(docFile[i + 2]);
 				if (!checkPhoneNumber(contact.getPhoneNumber()) || phoneNumberCheck.count(contact.getPhoneNumber())) {
 					continue;
 				}
-				contact.setEmail(docFile[i + 3].substr(8));
+				contact.setEmail(docFile[i + 3]);
 				if (!checkEmail(contact.getEmail()) || emailCheck.count(contact.getEmail())) {
 					continue;
 				}
-				contact.setAddress(docFile[i + 4].substr(10));
-				contact.setCompany(docFile[i + 5].substr(10));
-				contact.setRelatives(docFile[i + 6].substr(12));
+				contact.setAddress(docFile[i + 4]);
+				contact.setCompany(docFile[i + 5]);
+				contact.setRelatives(docFile[i + 6]);
 				phoneNumberCheck.insert(contact.getPhoneNumber());
 				emailCheck.insert(contact.getEmail());
 				contactList.push_back(contact);
@@ -963,9 +965,10 @@ public:
 		}
 		for (int i = 0; i < tmp.size() - 2; i += 3) {
 			User x;
-			x.setUsername(tmp[i].substr(11));
-			x.setPassword(tmp[i + 1].substr(11));
-			x.setEmail(tmp[i + 2].substr(8));
+			x.setUsername(tmp[i]);
+			x.setPassword(tmp[i + 1]);
+			x.setEmail(tmp[i + 2]);
+			cout << tmp[i] << endl << tmp[i + 1] << endl << tmp[i + 2] << endl;
 			usernameCheck.insert(x.getUsername());
 			emailCheck.insert(x.getEmail());
 			userList.push_back(x);

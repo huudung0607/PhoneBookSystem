@@ -1,19 +1,15 @@
-Username : huudung0607
-Password : huudung@0607
-Email : huudung6677@gmail.com
-
-Username : AnhDuy1702
-Password : anhduy@1702
-Email : anhduy@1702@gmail.com
-
-Username : LionelMessi
-Password : lionelmessi@123
-Email : leomixi123@gmail.com
-
-Username : CristianoRonaldo
-Password : ronaldoKorea@123
-Email : ronaldo1123@gmail.com
-
-Username : hoangtam
-Password : hoangtam@123
-Email : hoangtam123@gmail.com
+huudung0607
+huudung@0607
+huudung6677@gmail.com
+AnhDuy1702
+anhduy@1702
+anhduy@1702@gmail.com
+LionelMessi
+lionelmessi@123
+leomixi123@gmail.com
+CristianoRonaldo
+ronaldoKorea@123
+ronaldo1123@gmail.com
+hoangtam
+hoangtam@123
+hoangtam123@gmail.com

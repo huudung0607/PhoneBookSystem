@@ -1,32 +1,29 @@
-Contact ID : 056206010671
-Full Name : Huynh Huu Dung
-Phone Number : 0869282768
-Email : huudung0607@gmail.com
-Address : Dien Lac
-Company : Manulife
-Relatives : Ban Be
-
-Contact ID : 036204620161
-Full Name : Lionel Messi
-Phone Number : 0366767123
-Email : lionelmessi123@gmail.com
-Address : Chi Le
-Company : FiFa
-Relatives : Bo
-
-Contact ID : 067076712543
-Full Name : Cristiano Ronaldo
-Phone Number : 0366767776
-Email : ronaldo123@gmail.com
-Address : Han Quoc
-Company : FiFa
-Relatives : Me
-
-Contact ID : 034366024617
-Full Name : Huynh Huu Dung Sieu Cap Dep Trai
-Phone Number : 0868282768
-Email : huudung6767@gmail.com
-Address : Khanh Hoa
-Company : Viettel
-Relatives : Ban be
+056206010671
+Huynh Huu Dung
+0869282768
+huudung0607@gmail.com
+Dien Lac
+Manulife
+Ban Be
+036204620161
+Lionel Messi
+0366767123
+lionelmessi123@gmail.com
+Chi Le
+FiFa
+Bo
+067076712543
+Cristiano Ronaldo
+0366767776
+ronaldo123@gmail.com
+Han Quoc
+FiFa
+Me
+034366024617
+Huynh Huu Dung Sieu Cap Dep Trai
+0868282768
+huudung6767@gmail.com
+Khanh Hoa
+Viettel
+Ban be
 
