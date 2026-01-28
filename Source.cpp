@@ -54,8 +54,7 @@ public:
 	}
 	friend istream& operator >> (istream& in, User& x) {
 
-		//Tạo userID ngẫu nhiên từ 10000 đến 99999 và kiểm tra trùng lặp
-		srand(time(NULL));
+		//Tạo userID ngẫu nhiên từ 10000 đến 99999 và kiểm tra trùng lặ
 		int soID = rand() % 90000 + 10000; 
 		string ssoID = to_string(soID);
 		while (userIDCheck.count(ssoID)) {
@@ -708,7 +707,6 @@ public:
 
 	//tao nhom
 	void makeGroup() {
-		srand(time(NULL));
 		Group group;
 		int id = rand() % 900 + 100;
 		while (groupIDCheck.count(to_string(id))) {
@@ -980,6 +978,7 @@ public:
 
 int main()
 {
+	srand(time(NULL));
 	System system;
 	bool straight = false;
 	int cnt = 0;
