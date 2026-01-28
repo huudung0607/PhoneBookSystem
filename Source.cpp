@@ -60,7 +60,7 @@ public:
 		while (userIDCheck.count(ssoID)) {
 			soID = rand() % 90000 + 10000;
 		}
-		x.userID = soID;
+		x.userID = to_string(soID);
 
 		//Nhập và kiểm tra username
 		cout << "Ten dang nhap: ";
