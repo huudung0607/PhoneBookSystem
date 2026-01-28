@@ -902,7 +902,7 @@ public:
 			return;
 		}
 
-		for (size_t i = 0; i + 6 < docFile.size(); i += 7) {
+		for (int i = 0; i + 6 < docFile.size(); i += 7) {
 			Contact contact;
 			contact.setContactID(docFile[i]);
 			if (userIDCheck.count(contact.getContactID()) || !checkContactID(contact.getContactID())) {
